@@ -1,23 +1,26 @@
-import { PrismaClient, Product } from "@prisma/client"
+import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 export class ProductClass {
-  private name: string
-  private price: number
-  private description: string
-  private categoryId: string
+  private name: string;
+  private price: number;
+  private description: string;
+  private categoryId: string;
+  private quantity: number;
 
   constructor(
     name: string,
     price: number,
     description: string,
-    categoryId: string
+    categoryId: string,
+    quantity: number
   ) {
-    this.name = name
-    this.price = price
-    this.description = description
-    this.categoryId = categoryId
+    this.name = name;
+    this.price = price;
+    this.description = description;
+    this.categoryId = categoryId;
+    this.quantity = quantity;
   }
 
   async createProduct() {
@@ -26,40 +29,56 @@ export class ProductClass {
         name: this.name,
         price: this.price,
         description: this.description,
-        categoryId: this.categoryId,
+        quantity: this.quantity,
+        category: {
+          connect: { id: this.categoryId },
+        },
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-    })
+    });
 
-    return newProduct
+    return newProduct;
   }
 
-  static async updateProduct(id: string, product: Product) {
+  static async updateProduct(id: string, product: any) {
     const updatedProduct = await prisma.product.update({
       where: { id },
-      data: { ...product },
-    })
+      data: {
+        name: product.name,
+        price: product.price,
+        description: product.description,
+        category: {
+          connect: { id: product.categoryId },
+        },
+        updatedAt: new Date(),
+      },
+    });
 
-    return updatedProduct
+    return updatedProduct;
   }
 
   static async deleteProduct(id: string) {
-    const deleteProduct = await prisma.product.delete({
+    const deletedProduct = await prisma.product.delete({
       where: { id },
-    })
+    });
 
-    return deleteProduct
+    return deletedProduct;
   }
 
   static async getOneProduct(id: string) {
-    const product = await prisma.product.findUnique({ where: { id } })
+    const product = await prisma.product.findUnique({
+      where: { id },
+      include: { category: true },
+    });
 
-    return product
+    return product;
   }
 
   static async getProducts() {
-    const products = await prisma.product.findMany()
-    return products
+    const products = await prisma.product.findMany({
+      include: { category: true },
+    });
+    return products;
   }
 }

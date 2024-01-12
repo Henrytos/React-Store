@@ -1,24 +1,15 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Product } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 export class CategoryClass {
-  private name: string;
-  private createdAt: Date = new Date();
-  private updatedAt: Date = new Date();
-
-  constructor(name: string) {
-    this.name = name;
-  }
-
-  async createCategory() {
+  static async createCategory(name: string) {
     const newCategory = await prisma.category.create({
       data: {
-        name: this.name,
+        name,
+        quantity: 0,
       },
     });
-    this.createdAt = newCategory.createdAt;
-    this.updatedAt = newCategory.updatedAt;
     return newCategory;
   }
 }
