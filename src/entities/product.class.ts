@@ -19,6 +19,7 @@ export class ProductClass {
     this.description = description;
     this.quantity = quantity;
   }
+
   async createProduct(categoryId: string) {
     const newProduct = await prisma.product.create({
       data: {

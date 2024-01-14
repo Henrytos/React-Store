@@ -7,7 +7,7 @@ export class CategoryClass {
     const newCategory = await prisma.category.create({
       data: {
         name,
-        quantity: 0,
+
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -36,13 +36,14 @@ export class CategoryClass {
   static async getOneCategory(id: string) {
     const category = await prisma.category.findUnique({
       where: { id },
+      include: { products: true },
     });
     return category;
   }
 
   static async deleteCategory(id: string) {
-    const deletedCategory = await prisma.category.delete({ where: { id } });
     await prisma.product.deleteMany({ where: { categoryId: id } });
+    const deletedCategory = await prisma.category.delete({ where: { id } });
     return deletedCategory;
   }
 }

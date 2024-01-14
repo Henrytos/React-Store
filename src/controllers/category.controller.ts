@@ -12,8 +12,8 @@ async function getCategorys(req: Request, res: Response) {
 async function getOneCategory(req: Request, res: Response) {
   const { id } = req.params;
   try {
-    const catery = await CategoryClass.getOneCategory(id);
-    return res.status(200).json(catery);
+    const category = await CategoryClass.getOneCategory(id);
+    return res.status(200).json(category);
   } catch (error: any) {
     return res.status(500).json({ error: error.menssage });
   }
@@ -43,6 +43,7 @@ async function deleteCategory(req: Request, res: Response) {
     return res.status(200).json(deletedCategory);
   } catch (error: any) {
     res.status(500).json({ error: error.menssage });
+    console.log(error);
   }
 }
 
