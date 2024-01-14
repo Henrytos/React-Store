@@ -6,24 +6,20 @@ export class ProductClass {
   private name: string;
   private price: number;
   private description: string;
-  private categoryId: string;
   private quantity: number;
 
   constructor(
     name: string,
     price: number,
     description: string,
-    categoryId: string,
     quantity: number
   ) {
     this.name = name;
     this.price = price;
     this.description = description;
-    this.categoryId = categoryId;
     this.quantity = quantity;
   }
-
-  async createProduct() {
+  async createProduct(categoryId: string) {
     const newProduct = await prisma.product.create({
       data: {
         name: this.name,
@@ -31,7 +27,7 @@ export class ProductClass {
         description: this.description,
         quantity: this.quantity,
         category: {
-          connect: { id: this.categoryId },
+          connect: { id: categoryId },
         },
         createdAt: new Date(),
         updatedAt: new Date(),

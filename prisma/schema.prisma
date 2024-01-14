@@ -12,7 +12,6 @@ generator client {
 model Category {
   id    String @id @default(auto()) @map("_id") @db.ObjectId
   name  String 
-  quantity Int
   products  Product[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

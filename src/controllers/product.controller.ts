@@ -19,19 +19,17 @@ async function getOneProduct(req: Request, res: Response) {
 }
 
 async function crateProduct(req: Request, res: Response) {
-  const product: Product = req.body;
-
+  const { categoryId } = req.params;
+  const { name, price, description, quantity } = req.body;
   try {
-    const { name, price, categoryId, description, quantity } = product;
     const instanceProduct = new ProductClass(
       name,
       price,
       description,
-      categoryId,
       quantity
     );
 
-    const newProduct = instanceProduct.createProduct();
+    const newProduct = instanceProduct.createProduct(categoryId);
     return res.status(200).json(newProduct);
   } catch (error: any) {
     return res.status(500).json({ error: error.menssage });
@@ -51,10 +49,12 @@ async function deleteProduct(req: Request, res: Response) {
   res.status(200).json(productDelete);
 }
 
-export const ProductConstroller = {
+const ProductConstrollers = {
   getProducts,
   getOneProduct,
   crateProduct,
   updateProduct,
   deleteProduct,
 };
+
+export default ProductConstrollers;
