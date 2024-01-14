@@ -3,7 +3,7 @@ import { ProductRouter } from "./routes/product.route";
 import { CategoryRouter } from "./routes/category.route";
 
 const app = express();
-const port = process.env.PUBLIC_PORT || 8080;
+const port = process.env.PUBLIC_PORT;
 
 app.use(express.json());
 
