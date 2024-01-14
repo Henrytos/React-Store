@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express = require("express");
+const product_route_1 = require("./routes/product.route");
+const category_route_1 = require("./routes/category.route");
+const app = express();
+const port = process.env.PUBLIC_PORT || 8080;
+app.use(express.json());
+app.use("/product", product_route_1.ProductRouter);
+app.use("/category", category_route_1.CategoryRouter);
+app.listen(port, () => console.log(`listening on port ${port}`));
